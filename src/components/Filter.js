@@ -16,7 +16,7 @@ function Filter({dataArray, deleteFilterFunc, updateDataFunc, updateFilterFunc }
             dataArray.map( (data) => {
                 return (
                     <WrapItem key={data} >
-                        <Tag key={data} variant='outline' colorScheme='gray' w='fit-content'>
+                        <Tag key={data} variant='outline' colorScheme='blue' w='fit-content' fontSize='md'>
                             <TagLabel>{data}</TagLabel>
                             <TagCloseButton onClick={() => {deleteFilterFunc(data, updateFilterFunc, updateDataFunc, )}} />
                         </Tag>
