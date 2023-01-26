@@ -10,12 +10,10 @@ function Selector({dataArray, updateDataArray, placeholder, updateFilterArray}) 
         updateFilterArray((oldData) => [...oldData, newData] )
 
         //  Update de dataArray deleting the selected one
-        let array = [...dataArray]
-        array.splice(newData, 1)
-        updateDataArray(array)
+        updateDataArray(dataArray.filter( data => data!== newData))
     }
   return (
-    <Select placeholder={placeholder} onChange={setValues}>
+    <Select placeholder={placeholder} onChange={setValues} value={''}>
         {
             dataArray.map( (data) => {
                 return <option key={data} value={data}>{data}</option>
