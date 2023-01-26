@@ -8,11 +8,11 @@ import {
 import React from 'react'
 
 
-function Filtered({filterArray, updateFilter, updateDataArray }) {
+function Filtered({filterArray, updateFilterArray, updateDataArray }) {
 
     function updateValue(value){
         // Deleted the filtered one when "close it"
-        updateFilter(filterArray.filter( data => data !== value))
+        updateFilterArray(filterArray.filter( data => data !== value))
 
         // Add the deleted one to the original list
         updateDataArray((oldData) => [...oldData, value].sort() )
