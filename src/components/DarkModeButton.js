@@ -14,6 +14,9 @@ function DarkModeButton({colorMode, toggleColorMode}) {
     variant='ghost'
     fontSize='3xl'
     onClick={toggleColorMode}
+    isRound
+    _hover={{backgroundColor: 'transparent'}}
+    colorScheme='blue'
     />
   )
 }
