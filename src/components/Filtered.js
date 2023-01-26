@@ -12,9 +12,7 @@ function Filtered({filterArray, updateFilter, updateDataArray }) {
 
     function updateValue(value){
         // Deleted the filtered one when "close it"
-        let array = [...filterArray]
-        array.splice(value, 1)
-        updateFilter(array)
+        updateFilter(filterArray.filter( data => data !== value))
 
         // Add the deleted one to the original list
         updateDataArray((oldData) => [...oldData, value].sort() )
