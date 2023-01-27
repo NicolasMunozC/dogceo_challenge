@@ -154,7 +154,15 @@ function App() {
           <Text textAlign='center' hidden={!loading}>Cargando... </Text>
           { !showData &&
             filteredBreedsArray.map(breed => {
-              return <DoggyBox breed={breed} subBreeds={filteredBreedsArray} />
+              return (
+                <DoggyBox 
+                 key={breed}
+                 colorMode={colorMode}
+                 breed={breed}
+                 breedRandomImage={''}
+                 subBreeds={filteredBreedsArray} 
+                />
+              )
             })
           }
         </Box>
