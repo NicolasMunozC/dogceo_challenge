@@ -25,7 +25,7 @@ function App() {
   const [allBreedsList, setAllBreedsList] = React.useState([])
   const [allSubBreedsList, setAllSubBreedsList] = React.useState([])
   const [filteredBreedsArray, setFilteredBreedsArray] = React.useState([])
-  const [filteredSubBreedsArray, setFilteredSubBreadsArray] = React.useState([])
+  const [filteredSubBreedsArray, setFilteredSubBreedsArray] = React.useState([])
 
   // HACE LA PETICION INICIAL DE TODA LA DATA
   React.useEffect( () => {
@@ -47,7 +47,7 @@ function App() {
   // ELIMINA LOS FILTROS DE SUB-RAZAS CADA VEZ QUE ELIMINAN TODAS LAS RAZAS FILTRADAS
   React.useEffect( () => {
     if(filteredBreedsArray.length === 0){
-      setFilteredSubBreadsArray([])
+      setFilteredSubBreedsArray([])
     }
   }, [allBreedsList])
 
@@ -121,14 +121,14 @@ function App() {
               dataArray={allSubBreedsList} 
               addFilterFunc={addFilter}
               updateDataFunc={setAllSubBreedsList} 
-              updateFilterFunc={setFilteredSubBreadsArray}
+              updateFilterFunc={setFilteredSubBreedsArray}
               isDisabled={(filteredBreedsArray.length <= 0 && true) || loading}
               bg={colorMode === 'light' ? 'white' : 'blue.900'}
               />
               <Filter 
               dataArray={filteredSubBreedsArray} 
               deleteFilterFunc={deleteFilter} 
-              updateFilterFunc={setFilteredSubBreadsArray} 
+              updateFilterFunc={setFilteredSubBreedsArray} 
               updateDataFunc={setAllSubBreedsList} 
               isDisabled={loading}
               />
@@ -154,7 +154,7 @@ function App() {
           <Text textAlign='center' hidden={!loading}>Cargando... </Text>
           { !showData &&
             filteredBreedsArray.map(breed => {
-              return <DoggyBox bread={breed} subBreads={filteredBreedsArray} />
+              return <DoggyBox breed={breed} subBreeds={filteredBreedsArray} />
             })
           }
         </Box>
