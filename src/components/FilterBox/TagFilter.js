@@ -8,7 +8,7 @@ import {
 import React from 'react'
 
 
-function Filter({dataArray, deleteFilterFunc, updateDataFunc, updateFilterFunc, isDisabled }) {
+function TagFilter({dataArray, deleteFilterFunc, updateDataFunc, updateFilterFunc, isDisabled }) {
 
   return (
     <Wrap  spacing='0.3rem' mt='1rem' justify='center'>
@@ -28,4 +28,4 @@ function Filter({dataArray, deleteFilterFunc, updateDataFunc, updateFilterFunc, 
   )
 }
 
-export default Filter
+export default TagFilter
