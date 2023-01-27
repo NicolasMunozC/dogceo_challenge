@@ -24,7 +24,7 @@ function App() {
   const [showData, setShowData] = React.useState(false)
   const [allBreedsList, setAllBreedsList] = React.useState([])
   const [allSubBreedsList, setAllSubBreedsList] = React.useState([])
-  const [filteredBreadsArray, setFilteredBreadsArray] = React.useState([])
+  const [filteredBreedsArray, setFilteredBreedsArray] = React.useState([])
   const [filteredSubBreedsArray, setFilteredSubBreadsArray] = React.useState([])
 
   // HACE LA PETICION INICIAL DE TODA LA DATA
@@ -46,7 +46,7 @@ function App() {
 
   // ELIMINA LOS FILTROS DE SUB-RAZAS CADA VEZ QUE ELIMINAN TODAS LAS RAZAS FILTRADAS
   React.useEffect( () => {
-    if(filteredBreadsArray.length === 0){
+    if(filteredBreedsArray.length === 0){
       setFilteredSubBreadsArray([])
     }
   }, [allBreedsList])
@@ -96,19 +96,19 @@ function App() {
             <FormControl mt='1rem'>
               <FormLabel>Raza:</FormLabel>
               <Selector 
-              placeholder={filteredBreadsArray.length === 0 ? 'Seleccionar raza' : 'Agregar raza'}
+              placeholder={filteredBreedsArray.length === 0 ? 'Seleccionar raza' : 'Agregar raza'}
               dataArray={allBreedsList} 
               addFilterFunc={addFilter} 
               updateDataFunc={setAllBreedsList} 
-              updateFilterFunc={setFilteredBreadsArray}
+              updateFilterFunc={setFilteredBreedsArray}
               isRequired
               bg={colorMode === 'light' ? 'white' : 'blue.900'}
               isDisabled={loading}
               />
               <Filter 
-              dataArray={filteredBreadsArray} 
+              dataArray={filteredBreedsArray} 
               deleteFilterFunc={deleteFilter} 
-              updateFilterFunc={setFilteredBreadsArray} 
+              updateFilterFunc={setFilteredBreedsArray} 
               updateDataFunc={setAllBreedsList} 
               isDisabled={loading}
               />
@@ -122,7 +122,7 @@ function App() {
               addFilterFunc={addFilter}
               updateDataFunc={setAllSubBreedsList} 
               updateFilterFunc={setFilteredSubBreadsArray}
-              isDisabled={(filteredBreadsArray.length <= 0 && true) || loading}
+              isDisabled={(filteredBreedsArray.length <= 0 && true) || loading}
               bg={colorMode === 'light' ? 'white' : 'blue.900'}
               />
               <Filter 
@@ -140,7 +140,7 @@ function App() {
             colorScheme='blue'
             textColor={colorMode === 'light' ? 'whiteAlpha.900' : 'whiteAlpa.500'} 
             mt='2rem'
-            isDisabled={filteredBreadsArray.length === 0 && true} 
+            isDisabled={filteredBreedsArray.length === 0 && true} 
             onClick={makeRequest}
             boxShadow='lg'
             children={"Ver Doggy's 🐶❤️"}
@@ -152,9 +152,9 @@ function App() {
         <Box w='100%' h='fit-content' mt='2rem' display='flex' flexDir='column'>
           <Spinner mx='auto' hidden={!loading} mb='1rem' />
           <Text textAlign='center' hidden={!loading}>Cargando... </Text>
-          { showData &&
-            filteredBreadsArray.map(bread => {
-              return <DoggyBox bread={bread} subBreads={filteredBreadsArray} />
+          { !showData &&
+            filteredBreedsArray.map(breed => {
+              return <DoggyBox bread={breed} subBreads={filteredBreedsArray} />
             })
           }
         </Box>
