@@ -14,12 +14,14 @@ import {
 import Selector from './components/Selector';
 import Filter from './components/Filter';
 import DarkModeButton from './components/DarkModeButton';
+import DoggyBox from './components/DoggyBox';
 
 function App() {
 
   const { colorMode, toggleColorMode } = useColorMode()
 
   const [loading, setLoading] = React.useState(false)
+  const [showData, setShowData] = React.useState(false)
   const [allBreedsList, setAllBreedsList] = React.useState([])
   const [allSubBreedsList, setAllSubBreedsList] = React.useState([])
   const [filteredBreadsArray, setFilteredBreadsArray] = React.useState([])
@@ -101,12 +103,14 @@ function App() {
               updateFilterFunc={setFilteredBreadsArray}
               isRequired
               bg={colorMode === 'light' ? 'white' : 'blue.900'}
+              isDisabled={loading}
               />
               <Filter 
               dataArray={filteredBreadsArray} 
               deleteFilterFunc={deleteFilter} 
               updateFilterFunc={setFilteredBreadsArray} 
               updateDataFunc={setAllBreedsList} 
+              isDisabled={loading}
               />
             </FormControl>
 
@@ -118,7 +122,7 @@ function App() {
               addFilterFunc={addFilter}
               updateDataFunc={setAllSubBreedsList} 
               updateFilterFunc={setFilteredSubBreadsArray}
-              isDisabled={filteredBreadsArray.length <= 0 && true}
+              isDisabled={(filteredBreadsArray.length <= 0 && true) || loading}
               bg={colorMode === 'light' ? 'white' : 'blue.900'}
               />
               <Filter 
@@ -126,6 +130,7 @@ function App() {
               deleteFilterFunc={deleteFilter} 
               updateFilterFunc={setFilteredSubBreadsArray} 
               updateDataFunc={setAllSubBreedsList} 
+              isDisabled={loading}
               />
             </FormControl>
 
@@ -141,12 +146,17 @@ function App() {
             children={"Ver Doggy's 🐶❤️"}
             isLoading={loading}
             />
-            
+
           </Box>
 
         <Box w='100%' h='fit-content' mt='2rem' display='flex' flexDir='column'>
           <Spinner mx='auto' hidden={!loading} mb='1rem' />
           <Text textAlign='center' hidden={!loading}>Cargando... </Text>
+          { showData &&
+            filteredBreadsArray.map(bread => {
+              return <DoggyBox bread={bread} subBreads={filteredBreadsArray} />
+            })
+          }
         </Box>
 
       </Box>
