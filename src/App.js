@@ -25,14 +25,14 @@ function App() {
   const [filteredBreadsArray, setFilteredBreadsArray] = React.useState([])
   const [filteredSubBreedsArray, setFilteredSubBreadsArray] = React.useState([])
 
-
+  // HACE LA PETICION INICIAL DE TODA LA DATA
   React.useEffect( () => {
     fetch('https://dog.ceo/api/breeds/list/all')
     .then( (res) => res.json())
     .then( (res) => {
       const breeds = Object.keys(res.message)
-      const rawSubBreedsData = Object.values(res.message).flat().sort()
-      const subBreeds = Array.from(new Set(rawSubBreedsData))
+      const rawSubBreedsData = Object.values(res.message).flat()
+      const subBreeds = Array.from(new Set(rawSubBreedsData)).sort()
 
       setAllBreedsList(breeds)
       setAllSubBreedsList(subBreeds)
@@ -42,12 +42,20 @@ function App() {
     })
   },[])
 
-  // Se puede refactorizar ambas funciones y crear una solo funcion que haga las dos cosas dependiendo de la orden que le mande.
+  // ELIMINA LOS FILTROS DE SUB-RAZAS CADA VEZ QUE ELIMINAN TODAS LAS RAZAS FILTRADAS
+  React.useEffect( () => {
+    if(filteredBreadsArray.length === 0){
+      setFilteredSubBreadsArray([])
+    }
+  }, [allBreedsList])
+
+  // Se puede refactorizar ambas funciones y crear una solo funcion que haga las dos cosas dependiendo de la orden que el detonante.
   function deleteFilter(value, updateFilterArray, updateDataArray){
     updateFilterArray((oldData) => oldData.filter( data => data !== value))
     updateDataArray((oldData) => [...oldData, value].sort() )
   }
   
+  // Se puede refactorizar ambas funciones y crear una solo funcion que haga las dos cosas dependiendo de la orden que el detonante.
   function addFilter(value, updateFilterArray, updateDataArray){
     updateFilterArray((oldData) => [...oldData, value] )
     updateDataArray((oldData) => oldData.filter( data => data!== value))
@@ -65,10 +73,10 @@ function App() {
     },3000)
   }
 
-
-  React.useEffect( () => {
-    setFilteredSubBreadsArray([])
-  }, [allBreedsList])
+  // React.useEffect(()=>{
+  //   console.log('Lista de sub razas:',allSubBreedsList);
+  //   console.log('Lista de sub razas filtradas:',filteredSubBreedsArray);
+  // },[allSubBreedsList, filteredSubBreedsArray])
 
 
   return (
@@ -79,6 +87,7 @@ function App() {
         <Box mx='auto'>
           <Heading>Doggy APP 🐶</Heading>
         </Box>
+
           <Box mt='3rem' w='100%' display='flex' flexDir='column'>
             <Heading textAlign='center' fontSize='lg' textTransform='uppercase'>Filtros</Heading>
 
@@ -100,6 +109,7 @@ function App() {
               updateDataFunc={setAllBreedsList} 
               />
             </FormControl>
+
             <FormControl mt='1rem'>
               <FormLabel>Sub-raza:</FormLabel>
               <Selector 
@@ -118,6 +128,7 @@ function App() {
               updateDataFunc={setAllSubBreedsList} 
               />
             </FormControl>
+
             <Button 
             type='submit' 
             bg={colorMode === 'light' ? 'blue.600' : 'blue.900'} 
@@ -130,20 +141,25 @@ function App() {
             children={"Ver Doggy's 🐶❤️"}
             isLoading={loading}
             />
+            
           </Box>
+
         <Box w='100%' h='fit-content' mt='2rem' display='flex' flexDir='column'>
           <Spinner mx='auto' hidden={!loading} mb='1rem' />
           <Text textAlign='center' hidden={!loading}>Cargando... </Text>
         </Box>
+
       </Box>
-      <Text 
-      pos='absolute' 
-      bottom='0.5rem' 
-      right='0.5rem' 
-      textColor={colorMode === 'light' ? 'blackAlpha.800' : 'whiteAlpha.800'}>
-        Creado con ❤️ por 
-        <Link fontWeight='extrabold' ml='0.2rem' href='https://nicolasmunozc.github.io'>Nicolas Muñoz</Link>
-      </Text>
+
+        <Text 
+        pos='absolute' 
+        bottom='0.5rem' 
+        right='0.5rem' 
+        textColor={colorMode === 'light' ? 'blackAlpha.800' : 'whiteAlpha.800'}>
+          Creado con ❤️ por 
+          <Link fontWeight='extrabold' ml='0.2rem' href='https://nicolasmunozc.github.io'>Nicolas Muñoz</Link>
+        </Text>
+
     </Box>
   );
 }
