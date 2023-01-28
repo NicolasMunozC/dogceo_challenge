@@ -51,15 +51,15 @@ function App() {
       }
     });
     if( subBreeds.length > 0){
-      setSubBreedsList([...new Set(subBreeds)])
+      setSubBreedsList([...new Set(subBreeds)].sort())
     }
 
   }, [selectedBreeds])
 
   // FUNCION PARA ELIMINAR Y AGREGAR LA DATA DE LOS SELECCIONADOS Y LA LISTA SEGUN CORRESPONDA
   function selectedUpdate(value, whereAdd, whereDelete){
-    whereAdd( oldData => [...oldData, value])
-    whereDelete( oldData => oldData.filter( data => data !== value))
+    whereAdd( oldData => [...oldData, value].sort())
+    whereDelete( oldData => oldData.filter( data => data !== value).sort())
   }
 
   // FUNCION QUE RECIBE LOS BREEDS SELECCIONADOS Y RETORNARA UN OBJETO CON LOS BREED Y LOS SUB BREEDS SELECCIONADOS CORRESPONDIENTES
@@ -80,14 +80,21 @@ function App() {
         return selectedSubBreeds.some( subBreed =>  allData.message[breed].includes(subBreed))
       })
       setReqBreeds(breedsToRequest)
-
+      
       const selectedSubBreedsByBreed = getSelectedSubBreeds(breedsToRequest)
       setReqObj(selectedSubBreedsByBreed)
-
-    } 
+      
+    } else{
+      const breedsToRequest = selectedBreeds
+      setReqBreeds(breedsToRequest)
+    }
 }
 
+
   function returnToFilters(){
+    selectedBreeds.forEach( (breed) => {
+      selectedUpdate(breed, setBreedsList,  setSelectedBreeds)
+    })
     setShowData(false)
   }
 
@@ -95,7 +102,7 @@ function App() {
   return (
     <Box w='100vw' minH='100vh' display='grid' placeItems='center' bg={colorMode === 'light' ? 'blue.200' : 'blue.900'} >
       <DarkModeButton colorMode={colorMode} toggleColorMode={toggleColorMode} />
-      <Box w='90%' h='fit-content' my='4rem' bg={colorMode === 'light' ? 'whiteAlpha.800' : 'blackAlpha.500'} rounded='2xl' display='flex' flexDir='column' p='2rem' boxShadow='lg'>
+      <Box w='90%' maxW='700px' h='fit-content' my='4rem' bg={colorMode === 'light' ? 'whiteAlpha.800' : 'blackAlpha.500'} rounded='2xl' display='flex' flexDir='column' p='2rem' boxShadow='lg'>
 
         <Box mx='auto'>
           <Heading>Doggy APP 🐶</Heading>
