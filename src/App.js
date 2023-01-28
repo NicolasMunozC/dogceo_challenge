@@ -2,24 +2,20 @@ import React from 'react'
 import './App.css';
 import { 
   Box,
-  Button,
-  FormControl,
-  FormLabel,
   Heading, 
-  Link, 
-  Spinner, 
-  Text,
   useColorMode,
 } from '@chakra-ui/react';
-import Selector from './components/Selector';
-import Filter from './components/Filter';
 import DarkModeButton from './components/DarkModeButton';
-import DoggyBox from './components/DoggyBox';
+import FiltersBox from './components/FilterBox/FiltersBox';
+import DoggysBox from './components/DoggysBox/DoggysBox';
+import Loader from './components/Loader';
+import Footer from './components/Footer';
 
 function App() {
 
   const { colorMode, toggleColorMode } = useColorMode()
 
+  const [allData, setAllData] = React.useState([])
   const [loading, setLoading] = React.useState(false)
   const [showData, setShowData] = React.useState(false)
   const [allBreedsList, setAllBreedsList] = React.useState([])
@@ -27,156 +23,124 @@ function App() {
   const [filteredBreedsArray, setFilteredBreedsArray] = React.useState([])
   const [filteredSubBreedsArray, setFilteredSubBreedsArray] = React.useState([])
 
+  const [reqBreeds, setReqBreeds] = React.useState([])
+  const [reqObj, setReqObj] = React.useState({})
+
   // HACE LA PETICION INICIAL DE TODA LA DATA
   React.useEffect( () => {
-    fetch('https://dog.ceo/api/breeds/list/all')
-    .then( (res) => res.json())
-    .then( (res) => {
-      const breeds = Object.keys(res.message)
-      const rawSubBreedsData = Object.values(res.message).flat()
-      const subBreeds = Array.from(new Set(rawSubBreedsData)).sort()
-
-      setAllBreedsList(breeds)
-      setAllSubBreedsList(subBreeds)
-    })
-    .catch( (err) => {
-      console.log(err);
-    })
+      fetch('https://dog.ceo/api/breeds/list/all')
+      .then( (res) => res.json())
+      .then ( (res) => {
+        setAllData(res)
+        setAllBreedsList(Object.keys(res.message))
+      })
   },[])
 
-  // ELIMINA LOS FILTROS DE SUB-RAZAS CADA VEZ QUE ELIMINAN TODAS LAS RAZAS FILTRADAS
-  React.useEffect( () => {
-    if(filteredBreedsArray.length === 0){
-      setFilteredSubBreedsArray([])
-    }
-  }, [allBreedsList])
 
-  // Se puede refactorizar ambas funciones y crear una solo funcion que haga las dos cosas dependiendo de la orden que el detonante.
+  // ELIMINA LOS FILTROS DE SUB-RAZAS CADA VEZ QUE MODIFICAN LAS RAZAS FILTRADAS
+  // AGREGA LAS OPCIONES DE SUB RAZAS DISPONIBLES SEGUN LAS RAZAS FILTRADAS
+  React.useEffect( () => {
+    filteredSubBreedsArray.forEach( (subBreed) =>{
+        deleteFilter(subBreed, setFilteredSubBreedsArray, setAllSubBreedsList)
+    })
+    setAllSubBreedsList([])
+    let subBreeds = []
+    filteredBreedsArray.forEach( breed => {
+      if(allData.message[breed].length > 0){
+        subBreeds = subBreeds.concat(allData.message[breed])
+      }
+    });
+    if( subBreeds.length > 0){
+      setAllSubBreedsList([...new Set(subBreeds)])
+    }
+
+  }, [filteredBreedsArray])
+
+  // FUNCIONES PARA ELIMINAR O AGREGAR FILTROS TRASPASANDO DATA DEL ARRAY DE FILTROS AL ARRAY DE LISTA COMPLETA O VICEVERSA
+  // SE PODRIA REFACTORIZAR EN UNA SOLA FUNCION DESPUES
   function deleteFilter(value, updateFilterArray, updateDataArray){
     updateFilterArray((oldData) => oldData.filter( data => data !== value))
     updateDataArray((oldData) => [...oldData, value].sort() )
   }
-  
-  // Se puede refactorizar ambas funciones y crear una solo funcion que haga las dos cosas dependiendo de la orden que el detonante.
   function addFilter(value, updateFilterArray, updateDataArray){
     updateFilterArray((oldData) => [...oldData, value] )
     updateDataArray((oldData) => oldData.filter( data => data!== value))
   }
 
+
+  // FUNCION QUE RECIBE LOS BREEDS SELECCIONADOS Y RETORNARA UN OBJETO CON LOS BREED Y LOS SUB BREEDS CORRESPONDIENTES
+  const getSelectedSubBreeds = (breeds) => {
+    return breeds.reduce( (acc, breed) => {
+      acc[breed] = allData.message[breed].filter( subBreed => filteredSubBreedsArray.includes(subBreed))
+      return acc
+    }, {})
+  }
+
+//FUNCION QUE ORDENA LA DATA SELECCIONADA Y HACE LA SOLICITUD A LA API
   function makeRequest(){
     setLoading(true)
 
     if(filteredSubBreedsArray.length > 0){
-      console.log('SI HAY SUB RAZAS');
-    }
 
-    setTimeout( () => {
-      setLoading(false)
-    },3000)
+      const breedsToRequest = filteredBreedsArray.filter( breed => {
+        return filteredSubBreedsArray.some( subBreed =>  allData.message[breed].includes(subBreed))
+      })
+      setReqBreeds(breedsToRequest)
+
+      const selectedSubBreedsByBreed = getSelectedSubBreeds(breedsToRequest)
+      setReqObj(selectedSubBreedsByBreed)
+
+    } 
+
+}
+
+  function returnToFilters(){
+    setShowData(false)
   }
-
-  // React.useEffect(()=>{
-  //   console.log('Lista de sub razas:',allSubBreedsList);
-  //   console.log('Lista de sub razas filtradas:',filteredSubBreedsArray);
-  // },[allSubBreedsList, filteredSubBreedsArray])
 
 
   return (
-    <Box w='100vw' h='100vh' display='grid' placeItems='center' bg={colorMode === 'light' ? 'blue.200' : 'blue.900'} >
+    <Box w='100vw' minH='100vh' display='grid' placeItems='center' bg={colorMode === 'light' ? 'blue.200' : 'blue.900'} >
       <DarkModeButton colorMode={colorMode} toggleColorMode={toggleColorMode} />
-      <Box w='90%' h='fit-content' bg={colorMode === 'light' ? 'whiteAlpha.800' : 'blackAlpha.500'} rounded='2xl' display='flex' flexDir='column' p='2rem' boxShadow='lg'>
+      <Box w='90%' h='fit-content' my='4rem' bg={colorMode === 'light' ? 'whiteAlpha.800' : 'blackAlpha.500'} rounded='2xl' display='flex' flexDir='column' p='2rem' boxShadow='lg'>
 
         <Box mx='auto'>
           <Heading>Doggy APP 🐶</Heading>
         </Box>
 
-          <Box mt='3rem' w='100%' display='flex' flexDir='column'>
-            <Heading textAlign='center' fontSize='lg' textTransform='uppercase'>Filtros</Heading>
+        <FiltersBox 
+          showData={showData} 
+          filteredBreedsArray={filteredBreedsArray}
+          allBreedsList={allBreedsList}
+          addFilter={addFilter}
+          setAllBreedsList={setAllBreedsList}
+          setFilteredBreedsArray={setFilteredBreedsArray}
+          colorMode={colorMode}
+          loading={loading}
+          deleteFilter={deleteFilter}
+          filteredSubBreedsArray={filteredSubBreedsArray}
+          allSubBreedsList={allSubBreedsList}
+          setAllSubBreedsList={setAllSubBreedsList}
+          setFilteredSubBreedsArray={setFilteredSubBreedsArray}
+          makeRequest={makeRequest}
+        />
 
-            <FormControl mt='1rem'>
-              <FormLabel>Raza:</FormLabel>
-              <Selector 
-              placeholder={filteredBreedsArray.length === 0 ? 'Seleccionar raza' : 'Agregar raza'}
-              dataArray={allBreedsList} 
-              addFilterFunc={addFilter} 
-              updateDataFunc={setAllBreedsList} 
-              updateFilterFunc={setFilteredBreedsArray}
-              isRequired
-              bg={colorMode === 'light' ? 'white' : 'blue.900'}
-              isDisabled={loading}
-              />
-              <Filter 
-              dataArray={filteredBreedsArray} 
-              deleteFilterFunc={deleteFilter} 
-              updateFilterFunc={setFilteredBreedsArray} 
-              updateDataFunc={setAllBreedsList} 
-              isDisabled={loading}
-              />
-            </FormControl>
+        <Loader loading={loading} />
 
-            <FormControl mt='1rem'>
-              <FormLabel>Sub-raza:</FormLabel>
-              <Selector 
-              placeholder={filteredSubBreedsArray.length === 0 ? 'Mostrar todas' : 'Agregar sub raza'}
-              dataArray={allSubBreedsList} 
-              addFilterFunc={addFilter}
-              updateDataFunc={setAllSubBreedsList} 
-              updateFilterFunc={setFilteredSubBreedsArray}
-              isDisabled={(filteredBreedsArray.length <= 0 && true) || loading}
-              bg={colorMode === 'light' ? 'white' : 'blue.900'}
-              />
-              <Filter 
-              dataArray={filteredSubBreedsArray} 
-              deleteFilterFunc={deleteFilter} 
-              updateFilterFunc={setFilteredSubBreedsArray} 
-              updateDataFunc={setAllSubBreedsList} 
-              isDisabled={loading}
-              />
-            </FormControl>
-
-            <Button 
-            type='submit' 
-            bg={colorMode === 'light' ? 'blue.600' : 'blue.900'} 
-            colorScheme='blue'
-            textColor={colorMode === 'light' ? 'whiteAlpha.900' : 'whiteAlpa.500'} 
-            mt='2rem'
-            isDisabled={filteredBreedsArray.length === 0 && true} 
-            onClick={makeRequest}
-            boxShadow='lg'
-            children={"Ver Doggy's 🐶❤️"}
-            isLoading={loading}
-            />
-
-          </Box>
-
-        <Box w='100%' h='fit-content' mt='2rem' display='flex' flexDir='column'>
-          <Spinner mx='auto' hidden={!loading} mb='1rem' />
-          <Text textAlign='center' hidden={!loading}>Cargando... </Text>
-          { !showData &&
-            filteredBreedsArray.map(breed => {
-              return (
-                <DoggyBox 
-                 key={breed}
-                 colorMode={colorMode}
-                 breed={breed}
-                 breedRandomImage={''}
-                 subBreeds={filteredBreedsArray} 
-                />
-              )
-            })
-          }
-        </Box>
+        <DoggysBox 
+          colorMode={colorMode}
+          reqBreeds={reqBreeds}
+          reqObj={reqObj}
+          getSelectedSubBreeds={getSelectedSubBreeds}
+          setShowData={setShowData}
+          showData={showData}
+          returnToFilters={returnToFilters}
+          setLoading={setLoading}
+        />
 
       </Box>
 
-        <Text 
-        pos='absolute' 
-        bottom='0.5rem' 
-        right='0.5rem' 
-        textColor={colorMode === 'light' ? 'blackAlpha.800' : 'whiteAlpha.800'}>
-          Creado con ❤️ por 
-          <Link fontWeight='extrabold' ml='0.2rem' href='https://nicolasmunozc.github.io'>Nicolas Muñoz</Link>
-        </Text>
+      <Footer colorMode={colorMode} />
 
     </Box>
   );
