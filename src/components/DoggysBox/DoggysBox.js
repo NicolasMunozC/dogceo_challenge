@@ -2,28 +2,30 @@ import { Box, Button } from '@chakra-ui/react'
 import React from 'react'
 import DoggyCard from './DoggyCard'
 
-function DoggysBox(props) {
+function DoggysBox({colorMode, returnToFilters, reqBreeds, reqObj, getSelectedSubBreeds, showData, setShowData, setLoading}) {
+
   return (
-        <Box w='100%' h='fit-content' mt='2rem' display='flex' flexDir='column' hidden={!props.showData}>
+        <Box w='100%' h='fit-content' mt='2rem' display='flex' flexDir='column' hidden={!showData}>
           <Button 
-             bg={props.colorMode === 'light' ? 'blue.600' : 'blue.900'} 
+             bg={colorMode === 'light' ? 'blue.600' : 'blue.900'} 
              colorScheme='blue'
-             textColor={props.colorMode === 'light' ? 'whiteAlpha.900' : 'whiteAlpa.500'} 
+             textColor={colorMode === 'light' ? 'whiteAlpha.900' : 'whiteAlpa.500'} 
              mb='1rem'
-             onClick={()=>props.setShowData(false)}
+             onClick={returnToFilters}
              boxShadow='lg'
              children={"Volver"}
             />
           { 
-            props.filteredBreedsArray.map((breed, index) => {
+            reqBreeds.map((breed) => {
               return (
                 <DoggyCard 
                  key={breed}
-                 colorMode={props.colorMode}
+                 colorMode={colorMode}
                  breed={breed}
-                 breedRandomImage={props.randomBreedsImages[index]}
-                 subBreeds={props.filteredSubBreedsArray}
-                 showData={props.showData}
+                 reqObj={reqObj}
+                 getSelectedSubBreeds={getSelectedSubBreeds}
+                 setShowData={setShowData}
+                 setLoading={setLoading}
                 />
               )
             })
