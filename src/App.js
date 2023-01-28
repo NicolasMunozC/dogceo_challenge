@@ -18,10 +18,10 @@ function App() {
   const [allData, setAllData] = React.useState([])
   const [loading, setLoading] = React.useState(false)
   const [showData, setShowData] = React.useState(false)
-  const [allBreedsList, setAllBreedsList] = React.useState([])
-  const [allSubBreedsList, setAllSubBreedsList] = React.useState([])
-  const [filteredBreedsArray, setFilteredBreedsArray] = React.useState([])
-  const [filteredSubBreedsArray, setFilteredSubBreedsArray] = React.useState([])
+  const [breedsList, setBreedsList] = React.useState([])
+  const [subBreedsList, setSubBreedsList] = React.useState([])
+  const [selectedBreeds, setSelectedBreeds] = React.useState([])
+  const [selectedSubBreeds, setSelectedSubBreeds] = React.useState([])
 
   const [reqBreeds, setReqBreeds] = React.useState([])
   const [reqObj, setReqObj] = React.useState({})
@@ -32,7 +32,7 @@ function App() {
       .then( (res) => res.json())
       .then ( (res) => {
         setAllData(res)
-        setAllBreedsList(Object.keys(res.message))
+        setBreedsList(Object.keys(res.message))
       })
   },[])
 
@@ -40,21 +40,21 @@ function App() {
   // ELIMINA LOS FILTROS DE SUB-RAZAS CADA VEZ QUE MODIFICAN LAS RAZAS FILTRADAS
   // AGREGA LAS OPCIONES DE SUB RAZAS DISPONIBLES SEGUN LAS RAZAS FILTRADAS
   React.useEffect( () => {
-    filteredSubBreedsArray.forEach( (subBreed) =>{
-        deleteFilter(subBreed, setFilteredSubBreedsArray, setAllSubBreedsList)
+    selectedSubBreeds.forEach( (subBreed) =>{
+        deleteFilter(subBreed, setSelectedSubBreeds, setSubBreedsList)
     })
-    setAllSubBreedsList([])
+    setSubBreedsList([])
     let subBreeds = []
-    filteredBreedsArray.forEach( breed => {
+    selectedBreeds.forEach( breed => {
       if(allData.message[breed].length > 0){
         subBreeds = subBreeds.concat(allData.message[breed])
       }
     });
     if( subBreeds.length > 0){
-      setAllSubBreedsList([...new Set(subBreeds)])
+      setSubBreedsList([...new Set(subBreeds)])
     }
 
-  }, [filteredBreedsArray])
+  }, [selectedBreeds])
 
   // FUNCIONES PARA ELIMINAR O AGREGAR FILTROS TRASPASANDO DATA DEL ARRAY DE FILTROS AL ARRAY DE LISTA COMPLETA O VICEVERSA
   // SE PODRIA REFACTORIZAR EN UNA SOLA FUNCION DESPUES
@@ -71,7 +71,7 @@ function App() {
   // FUNCION QUE RECIBE LOS BREEDS SELECCIONADOS Y RETORNARA UN OBJETO CON LOS BREED Y LOS SUB BREEDS CORRESPONDIENTES
   const getSelectedSubBreeds = (breeds) => {
     return breeds.reduce( (acc, breed) => {
-      acc[breed] = allData.message[breed].filter( subBreed => filteredSubBreedsArray.includes(subBreed))
+      acc[breed] = allData.message[breed].filter( subBreed => selectedSubBreeds.includes(subBreed))
       return acc
     }, {})
   }
@@ -80,10 +80,10 @@ function App() {
   function makeRequest(){
     setLoading(true)
 
-    if(filteredSubBreedsArray.length > 0){
+    if(selectedSubBreeds.length > 0){
 
-      const breedsToRequest = filteredBreedsArray.filter( breed => {
-        return filteredSubBreedsArray.some( subBreed =>  allData.message[breed].includes(subBreed))
+      const breedsToRequest = selectedBreeds.filter( breed => {
+        return selectedSubBreeds.some( subBreed =>  allData.message[breed].includes(subBreed))
       })
       setReqBreeds(breedsToRequest)
 
@@ -110,18 +110,18 @@ function App() {
 
         <FiltersBox 
           showData={showData} 
-          filteredBreedsArray={filteredBreedsArray}
-          allBreedsList={allBreedsList}
+          filteredBreedsArray={selectedBreeds}
+          allBreedsList={breedsList}
           addFilter={addFilter}
-          setAllBreedsList={setAllBreedsList}
-          setFilteredBreedsArray={setFilteredBreedsArray}
+          setAllBreedsList={setBreedsList}
+          setFilteredBreedsArray={setSelectedBreeds}
           colorMode={colorMode}
           loading={loading}
           deleteFilter={deleteFilter}
-          filteredSubBreedsArray={filteredSubBreedsArray}
-          allSubBreedsList={allSubBreedsList}
-          setAllSubBreedsList={setAllSubBreedsList}
-          setFilteredSubBreedsArray={setFilteredSubBreedsArray}
+          filteredSubBreedsArray={selectedSubBreeds}
+          allSubBreedsList={subBreedsList}
+          setAllSubBreedsList={setSubBreedsList}
+          setFilteredSubBreedsArray={setSelectedSubBreeds}
           makeRequest={makeRequest}
         />
 
