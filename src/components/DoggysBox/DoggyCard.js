@@ -2,69 +2,52 @@ import {
     Avatar,
     Box, 
     Heading,
-    Text,
+    Image,
 } from '@chakra-ui/react'
 import React from 'react'
 
-function DoggyBox({colorMode, breed, breedRandomImage, subBreeds, showData}) {
-    const [randomSubBreedsImages, setRandomSubBreedsImages] = React.useState([])
+function DoggyBox({colorMode, reqObj, breed, setShowData, setLoading}) {
 
-    function getSubBreadImage(subBread){
+    const [breedImage, setBreedImage] = React.useState('')
+    const [subBreedsImages, setSubBreedsImages] = React.useState([])
+    const [subBreeds, setSubBreeds] = React.useState([])
 
-    }
-    
-    React.useEffect(()=>{
-        if(showData){
-            console.log('Cargar la info');
-            if(subBreeds.length > 0){
-                subBreeds.forEach( (subBreed) => {
-                    fetch(`https://dog.ceo/api/breed/${breed}/${subBreed}/images/random`)
-                    .then( res => res.json() )
-                    .then( res => {
-                        if(res.message){
-                            setRandomSubBreedsImages(oldData => [...oldData, res.message])
-                        } else{
-                            setRandomSubBreedsImages(oldData => [...oldData, ''])
-                        }
-                    } )
-                    .catch( err => console.log(err) )
-                })
-            }
-
-        }
-    },[showData])
-
-
-    React.useEffect(()=>{
-        console.log(breed, randomSubBreedsImages);
-    },[randomSubBreedsImages])
-
-  return (
-    <Box w='100%' h='fit-content' bg={colorMode === 'light' ? '' : 'blackAlpha.400'} borderRadius='lg' py='1rem' px='1rem' boxShadow='lg'>
-        <Box display='flex' flexDir='row' justifyContent='space-between'>
-            <Heading mr='1rem' fontSize='2xl' textTransform='capitalize'>{breed}</Heading>
-            <Avatar src={breedRandomImage} size='sm'/>
-        </Box>
-        { 
-            subBreeds.map( (subBreed, index) => {
-                return(
-                <Box key={index} display='flex' flexDir='column'>
-                    <Text>{subBreed}</Text>
-                    <Avatar src={randomSubBreedsImages[index]} />
-                </Box>
-                )
+    React.useEffect( () => {
+        fetch(`https://dog.ceo/api/breed/${breed}/images/random`)
+        .then( (res) => res.json())
+        .then( (res) => {setBreedImage(res.message)})
+        
+        const reqSubBreeds = reqObj[breed]
+        setSubBreeds(reqSubBreeds)
+        reqSubBreeds.forEach( (subBreed) => {
+            fetch(`https://dog.ceo/api/breed/${breed}/${subBreed}/images/random`)
+            .then( (res) => res.json() )
+            .then( (res) => {
+                setSubBreedsImages((oldData) => [...oldData, res.message])
+                setShowData(true)
+                setLoading(false)
             })
-        }
-            {/* {
-                subBreeds.map(subBreed => {
-                    return <Text>{subBreed}</Text>
-                })
-            } */}
-            {/* { randomSubBreedsImages.length > 0 &&
-                randomSubBreedsImages.map(subBreedImage => {
-                    return <Text>subBreedImage</Text>
-                })
-            } */}
+        })
+
+    },[breed, reqObj])
+    
+    return (
+        <Box w='100%' h='fit-content' bg={colorMode === 'light' ? 'whiteAlpha.700' : 'blackAlpha.400'} borderRadius='2xl' mt='2rem' py='2rem' px='1rem' boxShadow='lg'>
+        <Box display='flex' flexDir='row' justifyContent='space-between'>
+            <Heading fontSize='4xl' textTransform='capitalize'>{breed}</Heading>
+            <Avatar src={breedImage} size='md'/>
+        </Box>
+        <Box>
+            { 
+                subBreeds.map( (subBreed, index) => { return ( 
+                    <Box key={subBreed} mt='1rem'w='100%' >
+                        <Heading size='lg' textTransform='capitalize' textAlign='center' textColor={colorMode === 'light'? 'blue.700' : 'blue.500'}>{subBreed}</Heading> 
+                        <Image borderRadius='3xl' mt='1rem' mx='auto' src={subBreedsImages[index]} objectFit='cover' />
+                    </Box>
+                )})
+
+            }
+        </Box>
     </Box>
   )
 }
