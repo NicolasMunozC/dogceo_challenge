@@ -37,7 +37,7 @@ function FiltersBox(props) {
               addFilterFunc={props.addFilter}
               updateDataFunc={props.setAllSubBreedsList} 
               updateFilterFunc={props.setFilteredSubBreedsArray}
-              isDisabled={(props.filteredBreedsArray.length <= 0 && true) || props.loading}
+              isDisabled={(props.allSubBreedsList.length <= 0 && true) || props.loading}
               bg={props.colorMode === 'light' ? 'white' : 'blue.900'}
               />
               <TagFilter 
