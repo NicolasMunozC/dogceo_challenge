@@ -41,7 +41,7 @@ function App() {
   // AGREGA LAS OPCIONES DE SUB RAZAS DISPONIBLES SEGUN LAS RAZAS FILTRADAS
   React.useEffect( () => {
     selectedSubBreeds.forEach( (subBreed) =>{
-        deleteFilter(subBreed, setSelectedSubBreeds, setSubBreedsList)
+      selectedUpdate(subBreed, setSubBreedsList, setSelectedSubBreeds)
     })
     setSubBreedsList([])
     let subBreeds = []
@@ -56,19 +56,13 @@ function App() {
 
   }, [selectedBreeds])
 
-  // FUNCIONES PARA ELIMINAR O AGREGAR FILTROS TRASPASANDO DATA DEL ARRAY DE FILTROS AL ARRAY DE LISTA COMPLETA O VICEVERSA
-  // SE PODRIA REFACTORIZAR EN UNA SOLA FUNCION DESPUES
-  function deleteFilter(value, updateFilterArray, updateDataArray){
-    updateFilterArray((oldData) => oldData.filter( data => data !== value))
-    updateDataArray((oldData) => [...oldData, value].sort() )
-  }
-  function addFilter(value, updateFilterArray, updateDataArray){
-    updateFilterArray((oldData) => [...oldData, value] )
-    updateDataArray((oldData) => oldData.filter( data => data!== value))
+  // FUNCION PARA ELIMINAR Y AGREGAR LA DATA DE LOS SELECCIONADOS Y LA LISTA SEGUN CORRESPONDA
+  function selectedUpdate(value, whereAdd, whereDelete){
+    whereAdd( oldData => [...oldData, value])
+    whereDelete( oldData => oldData.filter( data => data !== value))
   }
 
-
-  // FUNCION QUE RECIBE LOS BREEDS SELECCIONADOS Y RETORNARA UN OBJETO CON LOS BREED Y LOS SUB BREEDS CORRESPONDIENTES
+  // FUNCION QUE RECIBE LOS BREEDS SELECCIONADOS Y RETORNARA UN OBJETO CON LOS BREED Y LOS SUB BREEDS SELECCIONADOS CORRESPONDIENTES
   const getSelectedSubBreeds = (breeds) => {
     return breeds.reduce( (acc, breed) => {
       acc[breed] = allData.message[breed].filter( subBreed => selectedSubBreeds.includes(subBreed))
@@ -91,7 +85,6 @@ function App() {
       setReqObj(selectedSubBreedsByBreed)
 
     } 
-
 }
 
   function returnToFilters(){
@@ -112,17 +105,16 @@ function App() {
           showData={showData} 
           selectedBreeds={selectedBreeds}
           breedsList={breedsList}
-          addFilter={addFilter}
           setBreedsList={setBreedsList}
           setSelectedBreeds={setSelectedBreeds}
           colorMode={colorMode}
           loading={loading}
-          deleteFilter={deleteFilter}
           selectedSubBreeds={selectedSubBreeds}
           subBreedsList={subBreedsList}
           setSubBreedsList={setSubBreedsList}
           setSelectedSubBreeds={setSelectedSubBreeds}
           makeRequest={makeRequest}
+          selectedUpdate={selectedUpdate}
         />
 
         <Loader loading={loading} />

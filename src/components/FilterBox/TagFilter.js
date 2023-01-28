@@ -8,7 +8,7 @@ import {
 import React from 'react'
 
 
-function TagFilter({dataArray, deleteFilterFunc, updateDataFunc, updateFilterFunc, isDisabled }) {
+function TagFilter({dataArray, updateDataFunc, updateFilterFunc, isDisabled , selectedUpdate}) {
 
   return (
     <Wrap  spacing='0.3rem' mt='1rem' justify='center'>
@@ -18,7 +18,7 @@ function TagFilter({dataArray, deleteFilterFunc, updateDataFunc, updateFilterFun
                     <WrapItem key={data} >
                         <Tag key={data} variant='outline' colorScheme='blue' w='fit-content' fontSize='md'>
                             <TagLabel>{data}</TagLabel>
-                            <TagCloseButton onClick={() => {deleteFilterFunc(data, updateFilterFunc, updateDataFunc, )}} isDisabled={isDisabled}/>
+                            <TagCloseButton onClick={() => {selectedUpdate(data, updateDataFunc, updateFilterFunc)}} isDisabled={isDisabled}/>
                         </Tag>
                     </WrapItem>
                 )
