@@ -76,7 +76,7 @@ function App() {
     }, {})
   }
 
-//FUNCION QUE ORDENA LA DATA SELECCIONADA Y HACE LA SOLICITUD A LA API
+//FUNCION QUE ORDENA LA DATA SELECCIONADA PARA HACER LA PETICION A LA API
   function makeRequest(){
     setLoading(true)
 
@@ -110,18 +110,18 @@ function App() {
 
         <FiltersBox 
           showData={showData} 
-          filteredBreedsArray={selectedBreeds}
-          allBreedsList={breedsList}
+          selectedBreeds={selectedBreeds}
+          breedsList={breedsList}
           addFilter={addFilter}
-          setAllBreedsList={setBreedsList}
-          setFilteredBreedsArray={setSelectedBreeds}
+          setBreedsList={setBreedsList}
+          setSelectedBreeds={setSelectedBreeds}
           colorMode={colorMode}
           loading={loading}
           deleteFilter={deleteFilter}
-          filteredSubBreedsArray={selectedSubBreeds}
-          allSubBreedsList={subBreedsList}
-          setAllSubBreedsList={setSubBreedsList}
-          setFilteredSubBreedsArray={setSelectedSubBreeds}
+          selectedSubBreeds={selectedSubBreeds}
+          subBreedsList={subBreedsList}
+          setSubBreedsList={setSubBreedsList}
+          setSelectedSubBreeds={setSelectedSubBreeds}
           makeRequest={makeRequest}
         />
 

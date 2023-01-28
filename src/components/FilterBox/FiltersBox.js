@@ -11,20 +11,20 @@ function FiltersBox(props) {
             <FormControl mt='1rem'>
               <FormLabel>Raza:</FormLabel>
               <Selector 
-              placeholder={props.filteredBreedsArray.length === 0 ? 'Seleccionar raza' : 'Agregar raza'}
-              dataArray={props.allBreedsList} 
+              placeholder={props.selectedBreeds.length === 0 ? 'Seleccionar raza' : 'Agregar raza'}
+              dataArray={props.breedsList} 
               addFilterFunc={props.addFilter} 
-              updateDataFunc={props.setAllBreedsList} 
-              updateFilterFunc={props.setFilteredBreedsArray}
+              updateDataFunc={props.setBreedsList} 
+              updateFilterFunc={props.setSelectedBreeds}
               isRequired
               bg={props.colorMode === 'light' ? 'white' : 'blue.900'}
               isDisabled={props.loading}
               />
               <TagFilter 
-              dataArray={props.filteredBreedsArray} 
+              dataArray={props.selectedBreeds} 
               deleteFilterFunc={props.deleteFilter} 
-              updateFilterFunc={props.setFilteredBreedsArray} 
-              updateDataFunc={props.setAllBreedsList} 
+              updateFilterFunc={props.setSelectedBreeds} 
+              updateDataFunc={props.setBreedsList} 
               isDisabled={props.loading}
               />
             </FormControl>
@@ -32,19 +32,19 @@ function FiltersBox(props) {
             <FormControl mt='1rem'>
               <FormLabel>Sub-raza:</FormLabel>
               <Selector 
-              placeholder={props.filteredSubBreedsArray.length === 0 ? 'Mostrar todas' : 'Agregar sub raza'}
-              dataArray={props.allSubBreedsList} 
+              placeholder={props.selectedSubBreeds.length === 0 ? 'Mostrar todas' : 'Agregar sub raza'}
+              dataArray={props.subBreedsList} 
               addFilterFunc={props.addFilter}
-              updateDataFunc={props.setAllSubBreedsList} 
-              updateFilterFunc={props.setFilteredSubBreedsArray}
-              isDisabled={(props.allSubBreedsList.length <= 0 && true) || props.loading}
+              updateDataFunc={props.setSubBreedsList} 
+              updateFilterFunc={props.setSelectedSubBreeds}
+              isDisabled={(props.subBreedsList.length <= 0 && true) || props.loading}
               bg={props.colorMode === 'light' ? 'white' : 'blue.900'}
               />
               <TagFilter 
-              dataArray={props.filteredSubBreedsArray} 
+              dataArray={props.selectedSubBreeds} 
               deleteFilterFunc={props.deleteFilter} 
-              updateFilterFunc={props.setFilteredSubBreedsArray} 
-              updateDataFunc={props.setAllSubBreedsList} 
+              updateFilterFunc={props.setSelectedSubBreeds} 
+              updateDataFunc={props.setSubBreedsList} 
               isDisabled={props.loading}
               />
             </FormControl>
@@ -54,7 +54,7 @@ function FiltersBox(props) {
              colorScheme='blue'
              textColor={props.colorMode === 'light' ? 'whiteAlpha.900' : 'whiteAlpa.500'} 
              mt='2rem'
-             isDisabled={props.filteredBreedsArray.length === 0 && true} 
+             isDisabled={props.selectedBreeds.length === 0 && true} 
              onClick={props.makeRequest}
              boxShadow='lg'
              children={"Ver Doggy's 🐶❤️"}
