@@ -13,7 +13,6 @@ function DoggyBox({colorMode, reqObj, breed, setShowData, setLoading}) {
     const [subBreeds, setSubBreeds] = React.useState([])
 
     React.useEffect( () => {
-        console.log(reqObj);
         fetch(`https://dog.ceo/api/breed/${breed}/images/random`)
         .then( (res) => res.json())
         .then( (res) => {setBreedImage(res.message)})
@@ -21,7 +20,6 @@ function DoggyBox({colorMode, reqObj, breed, setShowData, setLoading}) {
         const reqSubBreeds = reqObj[breed]
 
         if(reqSubBreeds){
-            console.log('SI HAY SUB BREED');
             setSubBreeds(reqSubBreeds)
             reqSubBreeds.forEach( (subBreed) => {
                 fetch(`https://dog.ceo/api/breed/${breed}/${subBreed}/images/random`)
@@ -33,8 +31,6 @@ function DoggyBox({colorMode, reqObj, breed, setShowData, setLoading}) {
                 })
             })
         } else{
-            console.log('NO HAY SUB BREED');
-            console.log(subBreeds);
             setShowData(true)
             setLoading(false)
         }
