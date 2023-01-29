@@ -38,28 +38,32 @@ function DoggyBox({colorMode, reqObj, breed, setShowData, setLoading}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[breed, reqObj])
     
-    return (
-        <Box w='100%' h='fit-content' bg={colorMode === 'light' ? 'whiteAlpha.700' : 'blackAlpha.400'} borderRadius='2xl' mt='2rem' py='2rem' px='1rem' boxShadow='lg'>
-        <Box display='flex' flexDir='row' justifyContent='space-between'>
-            <Heading fontSize={['2xl', '4xl']} textTransform='capitalize'>{breed}</Heading>
-            <Avatar src={breedImage} size={['sm', 'md']} />
-        </Box>
-        <Box>
-            { subBreeds.length === 0 &&
-                <Image borderRadius='3xl' mt='1rem' mx='auto' src={breedImage} objectFit='cover' boxSize={['250px','400px', '500px']} />
-            }
-            { 
-                subBreeds.map( (subBreed, index) => { return ( 
-                    <Box key={subBreed} mt='1rem'w='100%' >
-                        <Heading size='lg' textTransform='capitalize' textAlign='center' textColor={colorMode === 'light'? 'blue.700' : 'blue.500'}>{subBreed}</Heading> 
-                        <Image borderRadius='3xl' mt='1rem' mx='auto' src={subBreedsImages[index]} objectFit='cover' />
-                    </Box>
-                )})
 
-            }
+    if(breed){
+        return (
+            <Box w='100%' h='fit-content' bg={colorMode === 'light' ? 'whiteAlpha.700' : 'blackAlpha.400'} borderRadius='2xl' mt='2rem' py='2rem' px='1rem' boxShadow='lg'>
+            <Box display='flex' flexDir='row' justifyContent='space-between'>
+                <Heading fontSize={['2xl', '4xl']} textTransform='capitalize'>{breed}</Heading>
+                <Avatar src={breedImage} size={['sm', 'md']} />
+            </Box>
+            <Box>
+                { subBreeds.length === 0 &&
+                    <Image borderRadius='3xl' mt='1rem' mx='auto' src={breedImage} objectFit='cover' boxSize={['250px','400px', '500px']} />
+                }
+                { 
+                    subBreeds.map( (subBreed, index) => { return ( 
+                        <Box key={subBreed} mt='1rem'w='100%' >
+                            <Heading size='lg' textTransform='capitalize' textAlign='center' textColor={colorMode === 'light'? 'blue.700' : 'blue.500'}>{subBreed}</Heading> 
+                            <Image borderRadius='3xl' mt='1rem' mx='auto' src={subBreedsImages[index]} objectFit='cover' />
+                        </Box>
+                    )})
+    
+                }
+            </Box>
         </Box>
-    </Box>
-  )
+      )
+    }
+
 }
 
 export default DoggyBox
