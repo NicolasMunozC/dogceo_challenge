@@ -40,6 +40,7 @@ function DoggyBox({colorMode, reqObj, breed, setShowData, setLoading}) {
         }
         
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[breed, reqObj])
     
     return (
