@@ -13,7 +13,6 @@ function FiltersBox(props) {
               <Selector 
               placeholder={props.selectedBreeds.length === 0 ? 'Seleccionar raza' : 'Agregar raza'}
               dataArray={props.breedsList} 
-              selectedUpdate={props.selectedUpdate}
               updateDataFunc={props.setBreedsList} 
               updateFilterFunc={props.setSelectedBreeds}
               isRequired
@@ -22,7 +21,6 @@ function FiltersBox(props) {
               />
               <TagFilter 
               dataArray={props.selectedBreeds} 
-              selectedUpdate={props.selectedUpdate}
               updateFilterFunc={props.setSelectedBreeds} 
               updateDataFunc={props.setBreedsList} 
               isDisabled={props.loading}
@@ -34,7 +32,6 @@ function FiltersBox(props) {
               <Selector 
               placeholder={props.selectedSubBreeds.length === 0 ? 'Mostrar todas' : 'Agregar sub raza'}
               dataArray={props.subBreedsList} 
-              selectedUpdate={props.selectedUpdate}
               updateDataFunc={props.setSubBreedsList} 
               updateFilterFunc={props.setSelectedSubBreeds}
               isDisabled={(props.subBreedsList.length <= 0 && true) || props.loading}
@@ -42,7 +39,6 @@ function FiltersBox(props) {
               />
               <TagFilter 
               dataArray={props.selectedSubBreeds} 
-              selectedUpdate={props.selectedUpdate}
               updateFilterFunc={props.setSelectedSubBreeds} 
               updateDataFunc={props.setSubBreedsList} 
               isDisabled={props.loading}

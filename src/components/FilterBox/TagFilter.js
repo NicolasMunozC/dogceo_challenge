@@ -1,3 +1,4 @@
+import React from 'react'
 import { 
     Tag, 
     TagLabel, 
@@ -5,10 +6,10 @@ import {
     Wrap, 
     WrapItem,
 } from '@chakra-ui/react'
-import React from 'react'
+import { selectedUpdate } from '../../utils'
 
 
-function TagFilter({dataArray, updateDataFunc, updateFilterFunc, isDisabled , selectedUpdate}) {
+function TagFilter({dataArray, updateDataFunc, updateFilterFunc, isDisabled}) {
 
   return (
     <Wrap  spacing='0.3rem' mt='1rem' justify='center'>

@@ -1,16 +1,15 @@
-import { Select } from '@chakra-ui/select'
 import React from 'react'
+import { Select } from '@chakra-ui/select'
+import { selectedUpdate } from '../../utils'
 
 function Selector( {
   dataArray,
   placeholder, 
-  addFilterFunc, 
   updateDataFunc, 
   updateFilterFunc, 
   isDisabled, 
   isRequired, 
   bg, 
-  selectedUpdate,
 }) {
   
 
