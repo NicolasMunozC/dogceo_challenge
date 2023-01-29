@@ -5,7 +5,7 @@ import {
     Image,
 } from '@chakra-ui/react'
 import React from 'react'
-import { fetchBreedRandomImage } from '../../services'
+import { fetchBreedRandomImage, fetchSubBreedRandomImage } from '../../services'
 
 function DoggyBox({colorMode, reqObj, breed, setShowData, setLoading}) {
 
@@ -16,16 +16,15 @@ function DoggyBox({colorMode, reqObj, breed, setShowData, setLoading}) {
     React.useEffect( () => {
         fetchBreedRandomImage(breed)
         .then( res => setBreedImage(res) )
-        
+
         const reqSubBreeds = reqObj[breed]
 
         if(reqSubBreeds){
             setSubBreeds(reqSubBreeds)
             reqSubBreeds.forEach( (subBreed) => {
-                fetch(`https://dog.ceo/api/breed/${breed}/${subBreed}/images/random`)
-                .then( (res) => res.json() )
-                .then( (res) => {
-                    setSubBreedsImages((oldData) => [...oldData, res.message])
+                fetchSubBreedRandomImage({breed, subBreed})
+                .then( res => {
+                    setSubBreedsImages((oldData) => [...oldData, res]) 
                     setShowData(true)
                     setLoading(false)
                 })
