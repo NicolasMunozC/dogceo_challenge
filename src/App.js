@@ -11,7 +11,7 @@ import DoggysBox from './components/DoggysBox/DoggysBox';
 import Loader from './components/Loader';
 import Footer from './components/Footer';
 import { fetchAllData } from './services';
-import { selectedUpdate } from './utils'
+import { createSelectedObject, selectedUpdate } from './utils'
 
 function App() {
 
@@ -58,13 +58,14 @@ function App() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedBreeds])
 
+
   // FUNCION QUE RECIBE LOS BREEDS SELECCIONADOS Y RETORNARA UN OBJETO CON LOS BREED Y LOS SUB BREEDS SELECCIONADOS CORRESPONDIENTES
-  const getSelectedSubBreeds = (breeds) => {
-    return breeds.reduce( (acc, breed) => {
-      acc[breed] = allData.message[breed].filter( subBreed => selectedSubBreeds.includes(subBreed))
-      return acc
-    }, {})
-  }
+  // const getSelectedSubBreeds = (breeds) => {
+  //   return breeds.reduce( (acc, breed) => {
+  //     acc[breed] = allData.message[breed].filter( subBreed => selectedSubBreeds.includes(subBreed))
+  //     return acc
+  //   }, {})
+  // }
 
 //FUNCION QUE ORDENA LA DATA SELECCIONADA PARA HACER LA PETICION A LA API
   function makeRequest(){
@@ -77,7 +78,7 @@ function App() {
       })
       setReqBreeds(breedsToRequest)
       
-      const selectedSubBreedsByBreed = getSelectedSubBreeds(breedsToRequest)
+      const selectedSubBreedsByBreed = createSelectedObject({breeds: breedsToRequest, allData, selectedSubBreeds})
       setReqObj(selectedSubBreedsByBreed)
       
     } else{
@@ -125,7 +126,6 @@ function App() {
           colorMode={colorMode}
           reqBreeds={reqBreeds}
           reqObj={reqObj}
-          getSelectedSubBreeds={getSelectedSubBreeds}
           setShowData={setShowData}
           showData={showData}
           returnToFilters={returnToFilters}
