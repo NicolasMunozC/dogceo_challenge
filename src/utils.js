@@ -9,3 +9,10 @@ export const selectedUpdate = (value, whereAdd, whereDelete) => {
       return acc
     }, {})
   }
+
+  export const filterBreedsBySubBreeds = ({selectedBreeds, selectedSubBreeds, allData}) => {
+    return selectedBreeds.filter( breed => {
+      return selectedSubBreeds.some( subBreed => allData.message[breed].includes(subBreed))
+      })
+  }
+  

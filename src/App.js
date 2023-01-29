@@ -11,7 +11,7 @@ import DoggysBox from './components/DoggysBox/DoggysBox';
 import Loader from './components/Loader';
 import Footer from './components/Footer';
 import { fetchAllData } from './services';
-import { createSelectedObject, selectedUpdate } from './utils'
+import { createSelectedObject, filterBreedsBySubBreeds, selectedUpdate } from './utils'
 
 function App() {
 
@@ -59,31 +59,17 @@ function App() {
   }, [selectedBreeds])
 
 
-  // FUNCION QUE RECIBE LOS BREEDS SELECCIONADOS Y RETORNARA UN OBJETO CON LOS BREED Y LOS SUB BREEDS SELECCIONADOS CORRESPONDIENTES
-  // const getSelectedSubBreeds = (breeds) => {
-  //   return breeds.reduce( (acc, breed) => {
-  //     acc[breed] = allData.message[breed].filter( subBreed => selectedSubBreeds.includes(subBreed))
-  //     return acc
-  //   }, {})
-  // }
-
 //FUNCION QUE ORDENA LA DATA SELECCIONADA PARA HACER LA PETICION A LA API
   function makeRequest(){
     setLoading(true)
 
     if(selectedSubBreeds.length > 0){
+      const breedsToRequest = filterBreedsBySubBreeds({selectedBreeds, selectedSubBreeds, allData})
+      setReqBreeds(breedsToRequest)
+      setReqObj( createSelectedObject({breeds: breedsToRequest, allData, selectedSubBreeds}) )
 
-      const breedsToRequest = selectedBreeds.filter( breed => {
-        return selectedSubBreeds.some( subBreed =>  allData.message[breed].includes(subBreed))
-      })
-      setReqBreeds(breedsToRequest)
-      
-      const selectedSubBreedsByBreed = createSelectedObject({breeds: breedsToRequest, allData, selectedSubBreeds})
-      setReqObj(selectedSubBreedsByBreed)
-      
     } else{
-      const breedsToRequest = selectedBreeds
-      setReqBreeds(breedsToRequest)
+      setReqBreeds(selectedBreeds)
     }
 }
 
