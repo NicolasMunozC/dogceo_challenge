@@ -10,6 +10,8 @@ import FiltersBox from './components/FilterBox/FiltersBox';
 import DoggysBox from './components/DoggysBox/DoggysBox';
 import Loader from './components/Loader';
 import Footer from './components/Footer';
+import { fetchAllData } from './services';
+import { selectedUpdate } from './utils'
 
 function App() {
 
@@ -28,12 +30,11 @@ function App() {
 
   // HACE LA PETICION INICIAL DE TODA LA DATA
   React.useEffect( () => {
-      fetch('https://dog.ceo/api/breeds/list/all')
-      .then( (res) => res.json())
-      .then ( (res) => {
+    fetchAllData()
+    .then( (res) => {
         setAllData(res)
         setBreedsList(Object.keys(res.message))
-      })
+    })
   },[])
 
 
@@ -54,13 +55,8 @@ function App() {
       setSubBreedsList([...new Set(subBreeds)].sort())
     }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedBreeds])
-
-  // FUNCION PARA ELIMINAR Y AGREGAR LA DATA DE LOS SELECCIONADOS Y LA LISTA SEGUN CORRESPONDA
-  function selectedUpdate(value, whereAdd, whereDelete){
-    whereAdd( oldData => [...oldData, value].sort())
-    whereDelete( oldData => oldData.filter( data => data !== value).sort())
-  }
 
   // FUNCION QUE RECIBE LOS BREEDS SELECCIONADOS Y RETORNARA UN OBJETO CON LOS BREED Y LOS SUB BREEDS SELECCIONADOS CORRESPONDIENTES
   const getSelectedSubBreeds = (breeds) => {
@@ -121,7 +117,6 @@ function App() {
           setSubBreedsList={setSubBreedsList}
           setSelectedSubBreeds={setSelectedSubBreeds}
           makeRequest={makeRequest}
-          selectedUpdate={selectedUpdate}
         />
 
         <Loader loading={loading} />
