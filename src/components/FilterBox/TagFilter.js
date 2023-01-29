@@ -11,7 +11,7 @@ import { selectedUpdate } from '../../utils'
 
 function TagFilter({dataArray, updateDataFunc, updateFilterFunc, isDisabled}) {
 
-    if(dataArray.length > 0){
+    if(dataArray && dataArray.length > 0){
         return (
           <Wrap  spacing='0.3rem' mt='1rem' justify='center'>
               {
