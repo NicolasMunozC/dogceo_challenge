@@ -11,7 +11,7 @@ function FiltersBox(props) {
             <FormControl mt='1rem'>
               <FormLabel>Raza:</FormLabel>
               <Selector 
-              placeholder={props.selectedBreeds.length === 0 ? 'Seleccionar raza' : 'Agregar raza'}
+              placeholder={'Seleccionar raza'}
               dataArray={props.breedsList} 
               updateDataFunc={props.setBreedsList} 
               updateFilterFunc={props.setSelectedBreeds}
@@ -30,7 +30,7 @@ function FiltersBox(props) {
             <FormControl mt='1rem'>
               <FormLabel>Sub-raza:</FormLabel>
               <Selector 
-              placeholder={props.selectedSubBreeds.length === 0 ? 'Mostrar todas' : 'Agregar sub raza'}
+              placeholder={'Seleccionar sub raza'}
               dataArray={props.subBreedsList} 
               updateDataFunc={props.setSubBreedsList} 
               updateFilterFunc={props.setSelectedSubBreeds}
