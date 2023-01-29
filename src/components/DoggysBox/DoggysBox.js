@@ -2,7 +2,7 @@ import { Box, Button } from '@chakra-ui/react'
 import React from 'react'
 import DoggyCard from './DoggyCard'
 
-function DoggysBox({colorMode, returnToFilters, reqBreeds, reqObj, getSelectedSubBreeds, showData, setShowData, setLoading}) {
+function DoggysBox({colorMode, returnToFilters, reqBreeds, reqObj, showData, setShowData, setLoading}) {
 
   return (
         <Box w='100%' h='fit-content' mt='2rem' display='flex' flexDir='column' hidden={!showData}>
@@ -23,7 +23,6 @@ function DoggysBox({colorMode, returnToFilters, reqBreeds, reqObj, getSelectedSu
                  colorMode={colorMode}
                  breed={breed}
                  reqObj={reqObj}
-                 getSelectedSubBreeds={getSelectedSubBreeds}
                  setShowData={setShowData}
                  setLoading={setLoading}
                 />
