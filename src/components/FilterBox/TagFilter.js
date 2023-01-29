@@ -11,22 +11,26 @@ import { selectedUpdate } from '../../utils'
 
 function TagFilter({dataArray, updateDataFunc, updateFilterFunc, isDisabled}) {
 
-  return (
-    <Wrap  spacing='0.3rem' mt='1rem' justify='center'>
-        {
-            dataArray.map( (data) => {
-                return (
-                    <WrapItem key={data} >
-                        <Tag key={data} variant='outline' colorScheme='blue' w='fit-content' fontSize='md'>
-                            <TagLabel>{data}</TagLabel>
-                            <TagCloseButton onClick={() => {selectedUpdate(data, updateDataFunc, updateFilterFunc)}} isDisabled={isDisabled}/>
-                        </Tag>
-                    </WrapItem>
-                )
-            })
-        }
-    </Wrap>
-  )
+    if(dataArray.length > 0){
+        return (
+          <Wrap  spacing='0.3rem' mt='1rem' justify='center'>
+              {
+                  dataArray.map( (data) => {
+                      return (
+                          <WrapItem key={data} >
+                              <Tag key={data} variant='outline' colorScheme='blue' w='fit-content' fontSize='md'>
+                                  <TagLabel>{data}</TagLabel>
+                                  <TagCloseButton onClick={() => {selectedUpdate(data, updateDataFunc, updateFilterFunc)}} isDisabled={isDisabled}/>
+                              </Tag>
+                          </WrapItem>
+                      )
+                  })
+              }
+          </Wrap>
+        )
+        
+    }
+
 }
 
 export default TagFilter
