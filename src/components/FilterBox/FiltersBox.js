@@ -20,6 +20,7 @@ function FiltersBox(props) {
                 isRequired
                 bg={props.colorMode === 'light' ? 'white' : 'blue.900'}
                 isDisabled={props.loading}
+                showData={props.showData}
                 />
                 <TagFilter 
                 dataArray={props.selectedBreeds} 
@@ -38,6 +39,7 @@ function FiltersBox(props) {
                 updateFilterFunc={props.setSelectedSubBreeds}
                 isDisabled={(props.subBreedsList?.length <= 0 && true) || props.loading}
                 bg={props.colorMode === 'light' ? 'white' : 'blue.900'}
+                showData={props.showData}
                 />
                 <TagFilter 
                 dataArray={props.selectedSubBreeds} 
