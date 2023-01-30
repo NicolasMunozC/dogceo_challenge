@@ -3,6 +3,10 @@ import {
     Box, 
     Heading,
     Image,
+    Skeleton,
+    SkeletonCircle,
+    SkeletonText,
+    Spinner,
 } from '@chakra-ui/react'
 import React from 'react'
 import { fetchBreedRandomImage, fetchSubBreedRandomImage } from '../../services'
@@ -43,18 +47,26 @@ function DoggyBox({colorMode, reqObj, breed, setShowData, setLoading}) {
         return (
             <Box w='100%' h='fit-content' bg={colorMode === 'light' ? 'whiteAlpha.700' : 'blackAlpha.400'} borderRadius='2xl' mt='2rem' py='2rem' px='1rem' boxShadow='lg'>
             <Box display='flex' flexDir='row' justifyContent='space-between'>
-                <Heading fontSize={['2xl', '4xl']} textTransform='capitalize'>{breed}</Heading>
-                <Avatar src={breedImage} size={['sm', 'md']} />
+                <Heading fontSize={['2xl', '4xl']} textTransform='capitalize' loading='lazy'>{breed}</Heading>
+                <SkeletonCircle isLoaded={breedImage}>
+                    <Avatar src={breedImage} size={['sm', 'md']} />
+                </SkeletonCircle>
             </Box>
             <Box>
                 { subBreeds.length === 0 &&
+                <Skeleton isLoaded={breedImage}>
                     <Image borderRadius='3xl' mt='1rem' mx='auto' src={breedImage} objectFit='cover' boxSize={['250px','400px', '500px']} />
+                </Skeleton>
                 }
                 { 
                     subBreeds.map( (subBreed, index) => { return ( 
                         <Box key={subBreed} mt='1rem'w='100%' >
-                            <Heading size='lg' textTransform='capitalize' textAlign='center' textColor={colorMode === 'light'? 'blue.700' : 'blue.500'}>{subBreed}</Heading> 
-                            <Image borderRadius='3xl' mt='1rem' mx='auto' src={subBreedsImages[index]} objectFit='cover' />
+                            <SkeletonText isLoaded={subBreed}>
+                                <Heading size='lg' textTransform='capitalize' textAlign='center' textColor={colorMode === 'light'? 'blue.700' : 'blue.500'}>{subBreed}</Heading> 
+                            </SkeletonText>
+                            <Skeleton isLoaded={subBreedsImages[index]}>
+                                <Image borderRadius='3xl' mt='1rem' mx='auto' src={subBreedsImages[index]} objectFit='cover' />
+                            </Skeleton>
                         </Box>
                     )})
     
