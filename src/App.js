@@ -61,14 +61,17 @@ function App() {
 //FUNCION QUE ORDENA LA DATA SELECCIONADA PARA HACER LA PETICION A LA API
   function makeRequest(){
     setLoading(true)
-
+    
     if(selectedSubBreeds.length > 0){
       const breedsToRequest = filterBreedsBySubBreeds({selectedBreeds, selectedSubBreeds, allData})
       setReqBreeds(breedsToRequest)
       setReqObj( createSelectedObject({breeds: breedsToRequest, allData, selectedSubBreeds}) )
-
+      setShowData(true)
+      setLoading(true)
     } else{
       setReqBreeds(selectedBreeds)
+      setShowData(true)
+      setLoading(true)
     }
 }
 
