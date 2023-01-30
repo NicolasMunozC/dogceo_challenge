@@ -2,9 +2,9 @@ import React from 'react'
 import { Select } from '@chakra-ui/select'
 import { selectedUpdate } from '../../utils'
 
-function Selector( {dataArray, placeholder, updateDataFunc, updateFilterFunc, isDisabled, isRequired, bg}) {
+function Selector( {dataArray, placeholder, updateDataFunc, updateFilterFunc, isDisabled, isRequired, bg, showData}) {
   
-  if(dataArray && dataArray.length > 0){
+  if(!showData){
     return (
       <Select 
       placeholder={placeholder} 
