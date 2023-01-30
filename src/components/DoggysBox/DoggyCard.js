@@ -8,6 +8,7 @@ import {
 } from '@chakra-ui/react'
 import React from 'react'
 import { fetchBreedRandomImage, fetchSubBreedRandomImage } from '../../services'
+import { FaDog } from "react-icons/fa";
 
 function DoggyBox({colorMode, reqObj, breed, showData}) {
 
@@ -41,7 +42,7 @@ function DoggyBox({colorMode, reqObj, breed, showData}) {
             <Box w='100%' h='fit-content' bg={colorMode === 'light' ? 'whiteAlpha.700' : 'blackAlpha.400'} borderRadius='2xl' mt='2rem' py='2rem' px='1rem' boxShadow='lg'>
             <Box display='flex' flexDir='row' justifyContent='space-between'>
                 <Heading fontSize={['2xl', '4xl']} textTransform='capitalize' loading='lazy' w='fit-content'>{breed}</Heading>
-                    <Avatar src={breedImage}  size={['sm', 'md']} />
+                    <Avatar icon={<FaDog/>} src={breedImage}  size={['sm', 'md']} />
             </Box>
             <Box>
                 { subBreeds.length === 0 &&
