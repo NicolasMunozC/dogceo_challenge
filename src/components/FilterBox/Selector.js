@@ -12,7 +12,8 @@ function Selector( {dataArray, placeholder, updateDataFunc, updateFilterFunc, is
       value={''} 
       isDisabled={isDisabled} 
       isRequired={isRequired} 
-      variant='outline' bg={bg}
+      variant='outline' 
+      bg={bg}
       borderWidth={0}
       boxShadow='lg'
       >
