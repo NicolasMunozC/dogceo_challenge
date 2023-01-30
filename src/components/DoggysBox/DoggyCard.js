@@ -6,12 +6,11 @@ import {
     Skeleton,
     SkeletonCircle,
     SkeletonText,
-    Spinner,
 } from '@chakra-ui/react'
 import React from 'react'
 import { fetchBreedRandomImage, fetchSubBreedRandomImage } from '../../services'
 
-function DoggyBox({colorMode, reqObj, breed, setShowData, setLoading}) {
+function DoggyBox({colorMode, reqObj, breed, showData}) {
 
     const [breedImage, setBreedImage] = React.useState('')
     const [subBreedsImages, setSubBreedsImages] = React.useState([])
@@ -29,13 +28,8 @@ function DoggyBox({colorMode, reqObj, breed, setShowData, setLoading}) {
                 fetchSubBreedRandomImage({breed, subBreed})
                 .then( res => {
                     setSubBreedsImages((oldData) => [...oldData, res]) 
-                    setShowData(true)
-                    setLoading(false)
                 })
             })
-        } else{
-            setShowData(true)
-            setLoading(false)
         }
         
 
@@ -43,7 +37,7 @@ function DoggyBox({colorMode, reqObj, breed, setShowData, setLoading}) {
     },[breed, reqObj])
     
 
-    if(breed){
+    if(showData){
         return (
             <Box w='100%' h='fit-content' bg={colorMode === 'light' ? 'whiteAlpha.700' : 'blackAlpha.400'} borderRadius='2xl' mt='2rem' py='2rem' px='1rem' boxShadow='lg'>
             <Box display='flex' flexDir='row' justifyContent='space-between'>
@@ -58,7 +52,7 @@ function DoggyBox({colorMode, reqObj, breed, setShowData, setLoading}) {
                     <Image borderRadius='3xl' mt='1rem' mx='auto' src={breedImage} objectFit='cover' boxSize={['250px','400px', '500px']} />
                 </Skeleton>
                 }
-                { 
+                {
                     subBreeds.map( (subBreed, index) => { return ( 
                         <Box key={subBreed} mt='1rem'w='100%' >
                             <SkeletonText isLoaded={subBreed}>
