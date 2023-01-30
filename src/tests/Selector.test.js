@@ -12,4 +12,34 @@ describe('Selector component', () => {
         expect(screen.queryByText('Prueba')).toBeNull()
     })
 
+    it('dataArray length = 1', () => {
+        render(
+        <Selector
+        dataArray={['test']}
+        placeholder={'placeholder'}
+        updateDataFunc={()=>{}}
+        updateFilterFunc={()=>{}}
+        isDisabled={false}
+        isRequired={true}
+        bg={'light'}
+        />
+        )
+        expect(screen.getByText('test')).toBeInTheDocument()
+    })
+
+    it('dataArray length > 1', () => {
+        render(
+        <Selector
+        dataArray={['test1', 'test2', 'test']}
+        placeholder={'placeholder'}
+        updateDataFunc={()=>{}}
+        updateFilterFunc={()=>{}}
+        isDisabled={false}
+        isRequired={true}
+        bg={'light'}
+        />
+        )
+        expect(screen.getByText('test2')).toBeInTheDocument()
+    })
+
 })
