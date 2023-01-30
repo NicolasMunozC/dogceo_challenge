@@ -66,12 +66,16 @@ function App() {
       const breedsToRequest = filterBreedsBySubBreeds({selectedBreeds, selectedSubBreeds, allData})
       setReqBreeds(breedsToRequest)
       setReqObj( createSelectedObject({breeds: breedsToRequest, allData, selectedSubBreeds}) )
-      setShowData(true)
-      setLoading(true)
+      setTimeout(() => {
+        setShowData(true)
+        setLoading(false)
+      }, 1000);
     } else{
       setReqBreeds(selectedBreeds)
-      setShowData(true)
-      setLoading(true)
+      setTimeout(() => {
+        setShowData(true)
+        setLoading(false)
+      }, 1000);
     }
 }
 
@@ -114,7 +118,6 @@ function App() {
           colorMode={colorMode}
           reqBreeds={reqBreeds}
           reqObj={reqObj}
-          setShowData={setShowData}
           showData={showData}
           returnToFilters={returnToFilters}
           setLoading={setLoading}
