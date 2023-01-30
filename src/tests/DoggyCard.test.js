@@ -5,6 +5,7 @@ describe('DoggyCard component', () => {
     it('renders the component', () => {
         render(
         <DoggyCard 
+        showData={true}
         colorMode='light'
         breed='Breed'
         reqObj={{}} 
@@ -13,10 +14,11 @@ describe('DoggyCard component', () => {
         />)
         expect(screen.getByText('Breed')).toBeInTheDocument()
     })
-
+    
     it('does not renders the component', () => {
         render(
             <DoggyCard 
+            showData={false}
             colorMode='light'
             reqObj={{}} 
             setShowData={()=>{}}
